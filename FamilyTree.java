@@ -1,59 +1,53 @@
-public class FamilyTree { // Программа для поиска потомка
-        
-        static int N = 10; // Максимальное количество детей
-    
-        static class Node
-        {
-            char val;
-            Node[] child = new Node[N];
-    
-            Node(char Pip)
-            {
-                val = Pip;
-                for (int i = 0; i < N; i++)
-                    child[i] = null;
-            }
-        }
-        
-        static void printChild(Node root, char Pip, int chain) // Обход заданного дерева до указанного значения
-        {
-            // Если Pip текущий корень
-            if (root.val == Pip)
-            {
-                if (root.child[chain - 1] == null)
-                    System.out.print("Ошибка: Данных не существует\n");
-                else
-                    System.out.print(root.child[chain - 1].val + "\n");
-            }
-    
-            // Если Pip лежит в поддереве
-            for (int i = 0; i < N; i++)
-                if (root.child[i] != null)
-                    printChild(root.child[i], Pip, chain);
-        }
-    
-        public static void main(String[] args)
-        {
-            Node root = new Node('A');
-            root.child[0] = new Node('B');
-            root.child[1] = new Node('C');
-            root.child[2] = new Node('D');
-            root.child[3] = new Node('E');
-            root.child[0].child[0] = new Node('F');
-            root.child[0].child[1] = new Node('G');
-            root.child[2].child[0] = new Node('H');
-            root.child[0].child[0].child[0] = new Node('I');
-            root.child[0].child[0].child[1] = new Node('J');
-            root.child[0].child[0].child[2] = new Node('K');
-            root.child[2].child[0].child[0] = new Node('L');
-            root.child[2].child[0].child[1] = new Node('M');
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
-            char Pip = 'F';
-            System.out.print("Второй ребёнок F: ");
-            printChild(root, Pip, 2);
-     
-            Pip = 'A';
-            System.out.print("Седьмой ребёнок А: ");
-            printChild(root, Pip, 7);
+public class FamilyTree<E extends FamilyTreeItem> implements Iterable<E> {
+    private ArrayList<E> family;
+    private LocalDate birthDate;
+
+    public FamilyTree() {
+        this.family = new ArrayList<>();
+    }
+
+    public String getTree() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Список семьи: \n");
+        for (int i = 0; i < family.size(); i++) {
+            stringBuilder.append(family.get(i));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public void addHuman(E e) {
+        family.add(e);
+        if (e.getMather() != null) {
+            e.getMather().addChild((Human) e);
+        }
+        if (e.getFather() != null) {
+            e.getFather().addChild((Human) e);
         }
     }
+
+    public void sortByName() {
+        Collections.sort(family, new HumanIteratorByName<>());
+    }
+
+    public void sortByAge() {
+        Collections.sort(family, new HumanIteratorByAge<>());
+    }
+
+
+    @Override
+    public Iterator<E> iterator() {
+        return new HumanIterator(family);
+    }
+
+    @Override
+    public String toString() {
+        return getTree();
+    }
+}
