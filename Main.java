@@ -7,16 +7,18 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Service service = new Service();
-        service.addHuman("Илья", Gender.Male, LocalDate.of(2005, 5, 27), null, null, null);
-        service.addHuman("Алексей", Gender.Male, LocalDate.of(1983,12,4), null, null, null);
-        service.addHuman("Савелий", Gender.Male, LocalDate.of(1992,11,15), null, null, null);
-
-        System.out.println(service.getInfo());
-        service.sortByName();
-        System.out.println(service.getInfo());
-        service.sortByAge();
-        System.out.println(service.getInfo());
+        View view = new ConsoleUI();
+        view.start();
+//        Service service = new Service();
+//        service.addHuman("Илья", Gender.Male, LocalDate.of(2005, 5, 27), null, null, null);
+//        service.addHuman("Алексей", Gender.Male, LocalDate.of(1983,12,4), null, null, null);
+//        service.addHuman("Савелий", Gender.Male, LocalDate.of(1992,11,15), null, null, null);
+//
+//        System.out.println(service.getInfo());
+//        service.sortByName();
+//        System.out.println(service.getInfo());
+//        service.sortByAge();
+//        System.out.println(service.getInfo());
 
 
 //        FamilyTree familytree = new FamilyTree();
